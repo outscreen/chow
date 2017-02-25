@@ -1,0 +1,43 @@
+<div layout="column" class="md-inline-form">
+    <md-toolbar>
+        <h2 class="md-toolbar-tools">
+            <span>Create new account</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout-padding>
+        <form name="RegistrationForm">
+            <div>
+                <md-input-container>
+                    <label>Email</label>
+                    <input ng-model="registration.email" name="email" required
+                           ng-change="registration.email && validate('email', RegistrationForm.email)">
+                    <div ng-messages="RegistrationForm.email.$error">
+                        <div ng-message="email">{{RegistrationForm.email.text}}</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container>
+                    <label>Password</label>
+                    <input ng-model="registration.password" name="password" type="password" required
+                           ng-change="registration.password && validate('password', RegistrationForm.password)">
+                    <div ng-messages="RegistrationForm.password.$error">
+                        <div ng-message="password">{{RegistrationForm.password.text}}</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container>
+                    <label>Name</label>
+                    <input ng-model="registration.name" name="name" required>
+                </md-input-container>
+            </div>
+
+            <md-button class="md-raised md-primary" ng-click="do()"
+                       ng-disabled="RegistrationForm.$invalid">Register
+            </md-button>
+            <md-button class="md-raised" ng-click="go('login')">I have an account</md-button>
+        </form>
+    </md-content>
+</div>

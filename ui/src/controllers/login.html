@@ -1,3 +1,29 @@
-<div>
-    LOGIN
+<div layout="column" class="md-inline-form">
+    <md-toolbar>
+        <h2 class="md-toolbar-tools">
+            <span>Create new account</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout-padding>
+        <form name="LoginForm">
+            <div>
+                <md-input-container>
+                    <label>Email</label>
+                    <input ng-model="login.email" name="email" required>
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container>
+                    <label>Password</label>
+                    <input ng-model="login.password" name="password" type="password" required>
+                </md-input-container>
+            </div>
+
+            <md-button class="md-raised md-primary" ng-click="do()"
+                       ng-disabled="LoginForm.$invalid">Login
+            </md-button>
+            <md-button class="md-raised" ng-click="go('registration')">Create new account</md-button>
+        </form>
+    </md-content>
 </div>

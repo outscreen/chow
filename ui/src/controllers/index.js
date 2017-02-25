@@ -1,3 +1,3 @@
 require('./main');
-require('./register');
+require('./registration');
 require('./login');
