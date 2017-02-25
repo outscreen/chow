@@ -16,8 +16,8 @@ var bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const db = require('./db');
-const User = require('./user');
+const db = require('./core/db');
+const User = require('./models/user');
 const endpoints = require('./endpoint');
 const config = require('./config');
 

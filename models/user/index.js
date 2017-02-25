@@ -1,8 +1,8 @@
 'use strict';
 
-const hash = require('./hash');
-const db = require('../db');
-const config = require('../config');
+const hash = require('../../core/helpers/hash');
+const db = require('../../core/db');
+const config = require('../../config');
 
 
 class User {

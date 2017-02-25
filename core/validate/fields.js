@@ -15,6 +15,16 @@ const username = {
     }
 };
 
+const name = {
+    presence: true,
+    length: {
+        minimum: 4,
+        maximum: 50,
+        tooShort: "needs to be at least 4 characters long",
+        tooLong: "needs to be up to 50 characters",
+    }
+};
+
 const password = {
     presence: true,
     length: {
@@ -42,11 +52,32 @@ const description = {
     }
 };
 
-const dueDate = {
-    datetime: true,
+const title = {
+    length: {
+        minimum: 3,
+        maximum: 100,
+        tooShort: "needs to be at least 3 characters long",
+        tooLong: ": maximum size is 100",
+    }
+};
+
+const email = {
+    presence: true,
+    format: {
+        pattern: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        message: 'Should be a valid email address',
+    },
+    length: {
+        maximum: 100,
+        tooLong: "Email should be up to 100 characters",
+    }
 };
 
 module.exports = {
     username,
     password,
+    email,
+    name,
+    title,
+    description,
 };

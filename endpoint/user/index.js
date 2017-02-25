@@ -1,28 +1,25 @@
 'use strict';
 
-const User = require('../../user');
-const reminder = require('../../reminder');
-const requestValidation = require('.././request');
+const User = require('../../models/user');
+const requestValidation = require('../../core/validate/request');
 
 //TODO set required params
 const login = (req, res) => {
     const response = {};
 
     User.getDbUser({
-        username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
     }).catch((err) => {
         console.error(err);
-        return Promise.reject({ status: 401, text: 'Invalid username or password' });
+        return Promise.reject({ status: 401, text: 'Invalid email or password' });
     }).then((userInfo) => {
         req.session.userUuid = userInfo.uuid;
-        req.session.username = userInfo.username;
-        response.username = userInfo.username;
-        return reminder.getUnread(userInfo.uuid)
-            .catch(() => Promise.resolve(null));
-    }).then((reminders) => {
-        response.reminders = reminders;
-        response.success = true;
+        req.session.userEmail = userInfo.email;
+        response.name = userInfo.name;
+        response.role = userInfo.role;
+        return response;
+    }).then((response) => {
         res.status(200).send(response);
     }).catch((err) => {
         res.status(err.status).send(err.text);
@@ -33,13 +30,14 @@ const create = (req, res) => {
     const response = {};
 
     User.createDbUser({
-        username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
+        name: req.body.name,
     }).then((userInfo) => {
         req.session.userUuid = userInfo.uuid;
-        response.username = userInfo.username;
-        response.reminders = [];
-        response.success = true;
+        req.session.userEmail = userInfo.email;
+        response.name = userInfo.name;
+        response.role = userInfo.role;
         res.status(200).send(response);
     }).catch((err) => {
         res.status(400).send(err);
@@ -67,13 +65,13 @@ module.exports = [
         method: 'post',
         handler: login,
         // do not validate fields to allow old users log in if validation rules change
-        rules: [requestValidation.fieldsPresent(['username', 'password'])],
+        rules: [requestValidation.fieldsPresent(['email', 'password'])],
     },
     {
         url: '',
         method: 'post',
         handler: create,
-        rules: [requestValidation.fieldsValid(['username', 'password'])],
+        rules: [requestValidation.fieldsValid(['email', 'password', 'name'])],
     },
     {
         url: 'logout',

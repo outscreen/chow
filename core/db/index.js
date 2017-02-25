@@ -2,9 +2,9 @@
 
 const MongoDB = require('mongodb');
 const MongoClient = MongoDB.MongoClient;
-const config = require('../config');
-const log = require('./log');
-const random = require('./random');
+const config = require('../../config');
+const log = require('../helpers/log');
+const random = require('../helpers/random');
 
 const uuidLength = 8;
 
