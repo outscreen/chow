@@ -2,8 +2,8 @@
 
 if (([
         process.env.sessionsecret,
-        //process.env.rootuser,
-        //process.env.rootpass,
+        process.env.rootuser,
+        process.env.rootpass,
         process.env.crypto,
     ]).indexOf(undefined) !== -1) {
     console.error('Provide all creds');
