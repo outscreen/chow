@@ -9,15 +9,17 @@ class User {
     constructor(params) {
         this.username = params.username;
         this.hash = params.password ? hash(params.password) : params.hash;
-        this.email = params.email;
         this.role = params.role;
         this.uuid = params.uuid;
+        this.name = params.name;
     }
 
     static createDbUser(params) {
         // TODO validate params
         params.hash = params.password ? hash(params.password) : params.hash;
         delete params.password;
+
+        params.role = params.role || 'user';
 
         return db.getOne(config.db.usersTable, { username: params.username })
             .then((existingUser) => {

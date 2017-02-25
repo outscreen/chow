@@ -8,7 +8,7 @@ const login = (req, res) => {
     const response = {};
 
     User.getDbUser({
-        email: req.body.email,
+        username: req.body.email,
         password: req.body.password,
     }).catch((err) => {
         console.error(err);
@@ -30,7 +30,7 @@ const create = (req, res) => {
     const response = {};
 
     User.createDbUser({
-        email: req.body.email,
+        username: req.body.email,
         password: req.body.password,
         name: req.body.name,
     }).then((userInfo) => {
