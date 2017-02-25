@@ -1,0 +1,4 @@
+.idea
+start.sh
+npm-debug.log
+public/build

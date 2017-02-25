@@ -1,0 +1,42 @@
+{
+  "name": "Loi Chow",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:webpack",
+    "build:webpack": "webpack --config ./ui/config/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outscreen/chow.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/outscreen/chow/issues"
+  },
+  "homepage": "https://github.com/outscreen/chow#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "connect-mongo": "^1.3.2",
+    "express": "4.14.0",
+    "express-session": "^1.14.2",
+    "isomorphic-fetch": "^2.2.1",
+    "moment": "^2.17.1",
+    "mongodb": "2.2.0",
+    "validate.js": "^0.11.1"
+  },
+  "devDependencies": {
+    "babel-core": "6.17.0",
+    "babel-loader": "6.2.5",
+    "babel-preset-es2015": "^6.5.0",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^6.0.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "file-loader": "^0.10.0",
+    "css-loader": "^0.26.1",
+    "webpack": "2.1.0-beta.22"
+  }
+}
