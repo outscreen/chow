@@ -1,5 +1,8 @@
 .preview {
-    max-height: 300px;
+    background-size: 200px;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
 }
 
 .error {

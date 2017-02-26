@@ -18,7 +18,9 @@ function runModule($rootScope, $state, validate) {
         const error = validate(name, field.$viewValue);
         field.$setValidity(name, !error);
         field.text = error;
-    }
+    };
+
+    String.prototype.contains = function(value) { return this.indexOf(value) !== -1; };
 }
 
 angular.module('loi').config(config);

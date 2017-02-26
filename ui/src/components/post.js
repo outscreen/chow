@@ -7,12 +7,12 @@ function post() {
         controller: postCtrl,
         templateUrl: require('./post.html'),
         scope: {
-            data: '=',
-            showStatus: '@'
+            post: '=',
+            showStatus: '@',
+            mode: '@'
         },
     };
 }
 
 function postCtrl($scope) {
-
 }

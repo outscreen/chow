@@ -16,6 +16,7 @@
         <spinner ng-show="pending" color="light"></spinner>
     </md-button>
     <div ng-show="error" class="error">{{error}}</div>
-
-    <post show-status="true" ng-repeat="post in posts.list" data="post"></post>
+    <div ng-repeat="post in posts.list">
+        <post post="post" show-status="true" mode="preview edit"></post>
+    </div>
 </md-content>
