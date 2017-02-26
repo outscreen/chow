@@ -68,7 +68,7 @@ module.exports = [
         handler: add,
         rules: [
             requestValidation.loggedIn(),
-            requestValidation.fieldsValid(['url', 'title', 'description']),
+            requestValidation.fieldsValid(['url', 'title']),
         ],
     },
     {
@@ -82,7 +82,7 @@ module.exports = [
         handler: update,
         rules: [
             requestValidation.loggedIn(),
-            requestValidation.fieldsValid(['url', 'title', 'description']),
+            requestValidation.fieldsValid(['url', 'title']),
         ],
     },
     {
