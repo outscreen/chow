@@ -1,0 +1,24 @@
+<md-content layout-padding>
+    <spinner ng-show="!users.list" color="dark"></spinner>
+    <div ng-show="userListError" class="error">{{userListError}}</div>
+    <div class="user-list" ng-repeat="user in users.list">
+        <div class="user">
+            <div>{{user.uuid}}</div>
+            <div>{{user.username}}</div>
+            <div>{{user.name}}</div>
+            <md-input-container>
+                <label>Role</label>
+                <md-select ng-model="user.role">
+                    <md-option ng-repeat="(key, value) in users.roles" ng-value="value">
+                        {{value}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-button class="md-raised md-primary" ng-click="do(user)" ng-disabled="pending">
+                <span ng-hide="pending === user.uuid">Save</span>
+                <spinner ng-show="pending === user.uuid" color="light"></spinner>
+            </md-button>
+            <div ng-show="user.error" class="error">{{user.error}}</div>
+        </div>
+    </div>
+</md-content>

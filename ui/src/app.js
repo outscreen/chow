@@ -24,9 +24,9 @@ function runModule($rootScope, $state, validate) {
     String.prototype.contains = function(value) { return this.indexOf(value) !== -1; };
 }
 
-angular.module('loi').config(config);
-config.$inject = ['$stateProvider', '$urlRouterProvider', 'cloudinaryProvider'];
-function config($stateProvider, $urlRouterProvider, cloudinaryProvider, user) {
+angular.module('loi').config(appConfig);
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', 'cloudinaryProvider', 'config'];
+function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, config) {
     // Image hosting
     cloudinaryProvider.config({
         upload_endpoint: 'https://api.cloudinary.com/v1_1/', // default
@@ -38,6 +38,10 @@ function config($stateProvider, $urlRouterProvider, cloudinaryProvider, user) {
         .then((res) => {
             if (res.status !== 200) return Promise.reject();
             return res.data;
+        })
+        .then((user) => {
+            if (!role || config.roles.permissions[user.role].indexOf(role) !== -1) return user;
+            return Promise.reject();
         })
         .catch(() => {
             $rootScope.go('login');
@@ -76,6 +80,14 @@ function config($stateProvider, $urlRouterProvider, cloudinaryProvider, user) {
         controller: 'postsCtrl',
         resolve: {
             user: loggedIn(),
+        },
+    });
+    $stateProvider.state('users', {
+        url: '/users',
+        templateUrl: require('./controllers/users.html'),
+        controller: 'usersCtrl',
+        resolve: {
+            user: loggedIn('admin'),
         },
     });
 }

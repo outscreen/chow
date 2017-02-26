@@ -1,6 +1,5 @@
 'use strict';
 
-const roles = require('./roles');
 const isomorphic = require('./isomorphic');
 
 const config = Object.assign({}, isomorphic, {
@@ -12,7 +11,6 @@ const config = Object.assign({}, isomorphic, {
         postsTable: 'posts',
         posts: 'posts',
     },
-    roles,
 });
 
 module.exports = config;

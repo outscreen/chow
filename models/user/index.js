@@ -9,7 +9,7 @@ class User {
     constructor(params) {
         this.username = params.username;
         this.hash = params.password ? hash(params.password) : params.hash;
-        this.role = params.role;
+        this.role = params.role || config.roles.default;
         this.uuid = params.uuid;
         this.name = params.name;
     }
@@ -32,15 +32,14 @@ class User {
             });
     }
 
-    static updateDbUser(params, create) {
-        // TODO validate params
-        params.hash = params.password ? hash(params.password) : params.hash;
-        delete params.password;
+    static updateDbUser(search, params, create) {
+        if (search.password) search.hash = hash(search.password);
+        delete search.password;
 
-        return db.getOne(config.db.usersTable, { username: params.username })
+        return db.getOne(config.db.usersTable, search)
             .then((existingUser) => {
                 if (existingUser) {
-                    return db.update(config.db.usersTable, { username: params.username },
+                    return db.update(config.db.usersTable, search,
                         { $set: params }).then(() => new User(params));
                 }
 
@@ -54,7 +53,7 @@ class User {
     }
 
     static getDbUser(params, create) {
-        params.hash = params.password ? hash(params.password) : params.hash;
+        if (params.password) params.hash = hash(params.password);
         delete params.password;
 
         // If only user id passed, try getting the user from db
@@ -66,6 +65,10 @@ class User {
             }
             return Promise.resolve(new User(user));
         });
+    }
+
+    static getDbUsers(params) {
+        return db.get(config.db.usersTable, params).then((users) => users.map((user) => new User(user)));
     }
 }
 

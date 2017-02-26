@@ -1,6 +1,7 @@
 'use strict';
 
 const validate = require('validate.js');
+const config = require('../../config');
 
 const username = {
     presence: true,
@@ -73,6 +74,13 @@ const email = {
     }
 };
 
+const role = {
+    presence: true,
+    inclusion: {
+        within: Object.keys(config.roles.list).map((k) => config.roles.list[k]),
+    }
+};
+
 module.exports = {
     username,
     password,
@@ -80,4 +88,5 @@ module.exports = {
     name,
     title,
     description,
+    role,
 };

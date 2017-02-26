@@ -1,6 +1,7 @@
 'use strict';
 
 const User = require('../../models/user');
+const config = require('../../config');
 const requestValidation = require('../../core/validate/request');
 
 //TODO set required params
@@ -55,6 +56,30 @@ const state = (req, res) => {
     });
 };
 
+const getAll = (req, res) => {
+    User.getDbUsers({})
+        .then((users) => res.status(200).send(users))
+        .catch((err) => {
+            console.error(err);
+            if (err.status && err.text) return res.status(err.status).send(err.text);
+            return res.status(500).send('Please try again later');
+        });
+};
+
+const role = (req, res) => {
+    User.updateDbUser({
+        uuid: req.params.id,
+    }, {
+        role: req.body.role,
+    })
+        .then(() => res.status(200).send('OK'))
+        .catch((err) => {
+            console.error(err);
+            if (err.status && err.text) return res.status(err.status).send(err.text);
+            return res.status(500).send('Please try again later');
+        });
+};
+
 module.exports = [
     {
         url: 'login',
@@ -79,6 +104,18 @@ module.exports = [
         method: 'get',
         handler: state,
         rules: [requestValidation.loggedIn()],
+    },
+    {
+        url: 'all',
+        method: 'get',
+        handler: getAll,
+        rules: [requestValidation.role(config.roles.list.moderator)],
+    },
+    {
+        url: 'role/:id',
+        method: 'put',
+        handler: role,
+        rules: [requestValidation.role(config.roles.list.admin), requestValidation.fieldsValid(['role'])],
     },
 ];
 

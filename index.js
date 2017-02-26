@@ -43,9 +43,11 @@ db.ready
         }));
 
         // Create root user
-        if (process.env.rootuser && process.env.rootpass) User.updateDbUser({
+        if (process.env.rootuser && process.env.rootpass) User.updateDbUser(
+            {username: process.env.rootuser}, {
             username: process.env.rootuser,
             password: process.env.rootpass,
+            role: 'admin',
         }, true).then(() => {
             console.log('ROOT USER created');
         }).catch(console.log);

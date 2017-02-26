@@ -2,6 +2,7 @@
 
 const validate = require('validate.js');
 const validationRules = require('./fields');
+const rolePermissions = require('../../config').roles.permissions;
 
 const loggedIn = () => (req) => {
     if (req.session.userUuid) return;
@@ -22,8 +23,15 @@ const fieldsValid = (fields) => (req) => {
     return { status: 400, error, };
 };
 
+const role = (requiredRole) => (req) => {
+    const permissions = rolePermissions[req.session.userRole];
+    if (permissions.indexOf(requiredRole) !== -1) return;
+    return { status: 401, error: 'Unauthorized', };
+};
+
 module.exports = {
     loggedIn,
     fieldsValid,
     fieldsPresent,
+    role,
 };
