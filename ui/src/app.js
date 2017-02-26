@@ -10,8 +10,8 @@ require('./components');
 angular.module('loi').constant('config', require('../config'));
 
 angular.module('loi').run(runModule);
-runModule.$inject = ['$rootScope', '$http', '$state', 'validate'];
-function runModule($rootScope, $http, $state, validate) {
+runModule.$inject = ['$rootScope', '$http', '$state', 'validate', 'config'];
+function runModule($rootScope, $http, $state, validate, config) {
     $rootScope.go = $state.transitionTo;
     $rootScope.stringify = JSON.stringify.bind(JSON);
 
@@ -26,7 +26,13 @@ function runModule($rootScope, $http, $state, validate) {
         $rootScope.go('login');
     });
 
-    String.prototype.contains = function(value) { return this.indexOf(value) !== -1; };
+    $rootScope.hasPermission = (role) => {
+        return $rootScope.user && config.roles.permissions[$rootScope.user.role].indexOf(role) !== -1;
+    };
+
+    String.prototype.contains = function (value) {
+        return this.indexOf(value) !== -1;
+    };
 
     $http.get('/user')
         .then((res) => {
@@ -59,7 +65,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         })
         .then((user) => {
             $rootScope.user = user;
-            if (!role || config.roles.permissions[user.role].indexOf(role) !== -1) return user;
+            if (!role || $rootScope.hasPermission(role)) return user;
             return Promise.reject();
         })
         .catch(() => {
@@ -73,7 +79,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/posts.html'),
         controller: 'postsCtrl',
         resolve: {
-            user: () => $rootScope.user || {}
+            user: ($rootScope) => ($rootScope.user || {}),
         },
     });
     $stateProvider.state('login', {
@@ -101,6 +107,11 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         resolve: {
             user: loggedIn('login'),
         },
+    });
+    $stateProvider.state('view', {
+        url: '/view:id',
+        template: '<post ng-if="post" post="post" mode=""></post>',
+        controller: 'viewCtrl',
     });
     $stateProvider.state('my', {
         url: '/my',

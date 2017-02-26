@@ -22,19 +22,24 @@
 </head>
 
 <body>
-<div ng-app="loi" class="wrapper">
-    <header>
-        <a href="#">Chow</a>
-        <div ng-hide="user.name">
-            <a ng-click="go('login')">Login</a>
+<div ng-app="loi" class="app-container">
+    <header class="header">
+        <h1 ng-click="go('main')"><a href="#">Chow</a></h1>
+        <div ng-hide="user.name" class="right">
+            <a ng-click="go('login')" class="button">Login</a>
         </div>
-        <div ng-show="user.name">
-            <a ng-click="logout()">Logout</a>
-            <a ng-click="go('add')">{{user.name}}</a>
+        <div ng-show="user.name" class="right">
+            <a ng-click="logout()" class="button">Logout {{user.name}}</a>
+            <a ng-click="go('my')" class="button">My Posts</a>
+            <a ng-click="go('add')" class="button">Add Post</a>
+            <a ng-if="hasPermission('admin')" ng-click="go('users')" class="button">User</a>
+            <a ng-if="hasPermission('moderator')" ng-click="go('posts')" class="button">Pending Posts</a>
         </div>
     </header>
 
-    <div ui-view class="full-height"></div>
+    <div class="wrapper">
+        <div ui-view class="view-container"></div>
+    </div>
 </div>
 
 </body>

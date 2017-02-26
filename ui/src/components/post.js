@@ -1,5 +1,5 @@
 angular.module('loi').directive('post', post);
-postCtrl.$inject = ['$scope', '$rootScope', '$http', 'config'];
+postCtrl.$inject = ['$scope', '$rootScope', '$http', 'config', '$window'];
 function post() {
     return {
         restrict: 'E',
@@ -8,13 +8,12 @@ function post() {
         templateUrl: require('./post.html'),
         scope: {
             post: '=',
-            showStatus: '=',
             mode: '@'
         },
     };
 }
 
-function postCtrl($scope, $rootScope, $http, config) {
+function postCtrl($scope, $rootScope, $http, config, $window) {
     $scope.go = $rootScope.go;
     $scope.stringify = $rootScope.stringify;
 
@@ -33,5 +32,9 @@ function postCtrl($scope, $rootScope, $http, config) {
                 $scope.pending = null;
                 $scope.error = err;
             });
-    }
+    };
+
+    $scope.view = (post) => {
+        $window.open('/#/view' + post._id, '_blank');
+    };
 }

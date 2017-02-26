@@ -1,4 +1,4 @@
-<div class="post">
+<div class="post" ng-class="{preview: mode.contains('preview'), view: !mode.contains('preview')}">
     <div ng-if="mode.contains('approve')">
         <md-button class="md-raised md-primary" ng-click="do(approved)" ng-disabled="pending || post.status === approved">
             <span ng-hide="pending === approved">Approve</span>
@@ -8,13 +8,15 @@
             <span ng-hide="pending === rejected">Reject</span>
             <spinner ng-show="pending === rejected" color="light"></spinner>
         </md-button>
+        <md-button class="md-raised md-primary" ng-click="view(post)">
+            <span>View</span>
+        </md-button>
         <div ng-show="error" class="error">{{error}}</div>
     </div>
     <p class="title">
         {{post.title}}
         <i class="material-icons" ng-if="mode.contains('edit')" ng-click="go('edit', { post: stringify(post) })">create</i>
     </p>
-    <p class="status" ng-if="showStatus">{{post.status}}</p>
-    <div ng-class="{preview: mode.contains('preview')}" ng-style="{'background-image':'url(' + post.url + ')'}"></div>
+    <img class="image" ng-src="{{post.url}}"/>
     <p class="description">{{post.description}}</p>
 </div>

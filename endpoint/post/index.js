@@ -37,6 +37,7 @@ const get = (req, res) => {
     const params = {};
     req.query.status && (params.status = req.query.status);
     req.query.user && (params.userUuid = req.query.user);
+    req.params.id && (params._id = req.params.id);
     post.get(params)
         .then((posts) => res.status(200).send(posts))
         .catch((err) => {
@@ -66,7 +67,7 @@ module.exports = [
         handler: add,
     },
     {
-        url: '',
+        url: ':id?',
         method: 'get',
         handler: get,
     },

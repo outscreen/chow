@@ -1,6 +1,6 @@
 <md-content layout-padding>
     <div ng-if="posts.canChooseStatus">
-        <md-input-container>
+        <md-input-container class="width-500">
             <label>Show...</label>
             <md-select ng-model="posts.mode">
                 <md-option ng-value="'all'">
@@ -19,7 +19,5 @@
         <div ng-show="error" class="error">{{error}}</div>
     </div>
 
-    <div ng-repeat="post in posts.list">
-        <post post="post" show-status="canChooseStatus" mode="preview {{posts.canEdit}} {{posts.canApprove}}"></post>
-    </div>
+        <post ng-repeat="post in posts.list" post="post" mode="{{posts.view}} {{posts.canEdit}} {{posts.canApprove}}"></post>
 </md-content>

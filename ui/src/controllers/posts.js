@@ -8,6 +8,7 @@ function postsCtrl($scope, $http, $state, config, user) {
         canApprove: $state.is('posts') ? 'approve' : '',
         canEdit: $state.is('my') ? 'edit' : '',
         canChooseStatus: !$state.is('main'),
+        view: $state.is('main') ? 'view' : 'preview',
     };
     $scope.show = (mode) => {
         $scope.pending = true;
