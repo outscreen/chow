@@ -27,7 +27,8 @@ function runModule($rootScope, $http, $state, validate, config) {
     });
 
     $rootScope.hasPermission = (role) => {
-        return $rootScope.user && config.roles.permissions[$rootScope.user.role].indexOf(role) !== -1;
+        return $rootScope.user && config.roles.permissions[$rootScope.user.role] &&
+            config.roles.permissions[$rootScope.user.role].indexOf(role) !== -1;
     };
 
     String.prototype.contains = function (value) {
