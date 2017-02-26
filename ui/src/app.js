@@ -10,8 +10,8 @@ require('./components');
 angular.module('loi').constant('config', require('../config'));
 
 angular.module('loi').run(runModule);
-runModule.$inject = ['$rootScope', '$state', 'validate'];
-function runModule($rootScope, $state, validate) {
+runModule.$inject = ['$rootScope', '$http', '$state', 'validate'];
+function runModule($rootScope, $http, $state, validate) {
     $rootScope.go = $state.transitionTo;
     $rootScope.stringify = JSON.stringify.bind(JSON);
 
@@ -21,7 +21,21 @@ function runModule($rootScope, $state, validate) {
         field.text = error;
     };
 
+    $rootScope.logout = () => $http.get('user/logout').success(() => {
+        $rootScope.user = {};
+        $rootScope.go('main');
+    });
+
     String.prototype.contains = function(value) { return this.indexOf(value) !== -1; };
+
+    $http.get('/user')
+        .then((res) => {
+            if (res.status !== 200) return Promise.reject();
+            $rootScope.user = res.data;
+        })
+        .catch(() => {
+            $rootScope.user = {};
+        });
 }
 
 angular.module('loi').config(appConfig);
@@ -39,6 +53,10 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
             if (res.status !== 200) return Promise.reject();
             return res.data;
         })
+        .catch(() => {
+            $rootScope.user = {};
+            return Promise.reject();
+        })
         .then((user) => {
             $rootScope.user = user;
             if (!role || config.roles.permissions[user.role].indexOf(role) !== -1) return user;
@@ -55,7 +73,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/posts.html'),
         controller: 'postsCtrl',
         resolve: {
-            user: ($http, $rootScope) => $rootScope.user || loggedIn()($http, $rootScope)
+            user: () => $rootScope.user || {}
         },
     });
     $stateProvider.state('login', {
@@ -72,11 +90,17 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         url: '/add',
         templateUrl: require('./controllers/add.html'),
         controller: 'addCtrl',
+        resolve: {
+            user: loggedIn('login'),
+        },
     });
     $stateProvider.state('edit', {
         url: '/edit:post',
         templateUrl: require('./controllers/add.html'),
         controller: 'addCtrl',
+        resolve: {
+            user: loggedIn('login'),
+        },
     });
     $stateProvider.state('my', {
         url: '/my',

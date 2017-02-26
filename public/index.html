@@ -23,7 +23,17 @@
 
 <body>
 <div ng-app="loi" class="wrapper">
-    <header></header>
+    <header>
+        <a href="#">Chow</a>
+        <div ng-hide="user.name">
+            <a ng-click="go('login')">Login</a>
+        </div>
+        <div ng-show="user.name">
+            <a ng-click="logout()">Logout</a>
+            <a ng-click="go('add')">{{user.name}}</a>
+        </div>
+    </header>
+
     <div ui-view class="full-height"></div>
 </div>
 

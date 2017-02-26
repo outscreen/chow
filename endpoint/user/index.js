@@ -96,8 +96,8 @@ module.exports = [
     },
     {
         url: 'logout',
-        method: 'post',
-        handler: create,
+        method: 'get',
+        handler: logout,
     },
     {
         url: '',

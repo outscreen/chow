@@ -45,6 +45,7 @@ db.ready
         // Create root user
         if (process.env.rootuser && process.env.rootpass) User.updateDbUser(
             {username: process.env.rootuser}, {
+                name: 'Admin',
             username: process.env.rootuser,
             password: process.env.rootpass,
             role: 'admin',
