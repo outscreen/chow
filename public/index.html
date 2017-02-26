@@ -24,9 +24,10 @@
 <body>
 <div ng-app="loi" class="app-container">
     <header class="header">
-        <h1 ng-click="go('main')"><a href="#">Chow</a></h1>
+        <h1 ng-click="go('main')"><a href="#">Chow Chow</a></h1>
         <div ng-hide="user.name" class="right">
             <a ng-click="go('login')" class="button">Login</a>
+            <a ng-click="go('registration')" class="button">Registration</a>
         </div>
         <div ng-show="user.name" class="right">
             <a ng-click="logout()" class="button">Logout {{user.name}}</a>
