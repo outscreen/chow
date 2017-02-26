@@ -5,6 +5,7 @@ if (([
         process.env.rootuser,
         process.env.rootpass,
         process.env.crypto,
+        process.env.dbUrl,
     ]).indexOf(undefined) !== -1) {
     console.error('Provide all creds');
     process.exit(1);
