@@ -3,8 +3,16 @@ loginCtrl.$inject = ['$scope', '$http'];
 
 function loginCtrl($scope, $http) {
     $scope.login = {};
-    $scope.do = () => $http.post('/user/login', $scope.login)
-        .success(() => {
-            $scope.go('my');
-        });
+    $scope.do = () => {
+        $scope.pending = true;
+        $http.post('/user/login', $scope.login)
+            .success(() => {
+                $scope.pending = false;
+                $scope.go('my');
+            })
+            .catch((err) => {
+                $scope.pending = false;
+                $scope.error = err;
+            });
+    }
 }

@@ -6,7 +6,7 @@
     </md-toolbar>
 
     <md-content layout-padding>
-        <form name="RegistrationForm">
+        <form name="RegistrationForm" ng-submit="!pending && do()">
             <div>
                 <md-input-container>
                     <label>Email</label>
@@ -34,10 +34,11 @@
                 </md-input-container>
             </div>
 
-            <md-button class="md-raised md-primary" ng-click="do()"
-                       ng-disabled="RegistrationForm.$invalid">Register
+            <md-button class="md-raised md-primary" type="submit"
+                       ng-disabled="pending || RegistrationForm.$invalid">Register
             </md-button>
             <md-button class="md-raised" ng-click="go('login')">I have an account</md-button>
+            <div ng-show="error" class="error">{{error}}</div>
         </form>
     </md-content>
 </div>

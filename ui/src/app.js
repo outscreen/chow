@@ -23,7 +23,7 @@ function runModule($rootScope, $http, $state, validate) {
 
     $rootScope.logout = () => $http.get('user/logout').success(() => {
         $rootScope.user = {};
-        $rootScope.go('main');
+        $rootScope.go('login');
     });
 
     String.prototype.contains = function(value) { return this.indexOf(value) !== -1; };
