@@ -1,5 +1,5 @@
 angular.module('loi').directive('post', post);
-postCtrl.$inject = ['$scope'];
+postCtrl.$inject = ['$scope', '$rootScope'];
 function post() {
     return {
         restrict: 'E',
@@ -14,5 +14,7 @@ function post() {
     };
 }
 
-function postCtrl($scope) {
+function postCtrl($scope, $rootScope) {
+    $scope.go = $rootScope.go;
+    $scope.stringify = $rootScope.stringify;
 }

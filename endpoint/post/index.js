@@ -18,8 +18,7 @@ const add = (req, res) => {
 };
 
 const update = (req, res) => {
-    // TODO add role
-    post.getOne({ _id: req.body._id })
+    post.getOne({ _id: req.params.id })
         .then((postData) => {
             if (postData.userUuid !== req.session.userUuid) {
                 return Promise.reject({status: 401, text: 'Unauthorized'});

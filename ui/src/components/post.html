@@ -1,5 +1,8 @@
 <div class="post">
-    <p class="title">{{post.title}}</p>
+    <p class="title">
+        {{post.title}}
+        <i class="material-icons" ng-if="mode.contains('edit')" ng-click="go('edit', { post: stringify(post) })">create</i>
+    </p>
     <p class="status" ng-if="showStatus">{{post.status}}</p>
     <div ng-class="{preview: mode.contains('preview')}" ng-style="{'background-image':'url(' + post.url + ')'}"></div>
     <p class="description">{{post.description}}</p>

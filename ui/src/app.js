@@ -13,6 +13,7 @@ angular.module('loi').run(runModule);
 runModule.$inject = ['$rootScope', '$state', 'validate'];
 function runModule($rootScope, $state, validate) {
     $rootScope.go = $state.transitionTo;
+    $rootScope.stringify = JSON.stringify.bind(JSON);
 
     $rootScope.validate = (name, field) => {
         const error = validate(name, field.$viewValue);
@@ -61,6 +62,11 @@ function config($stateProvider, $urlRouterProvider, cloudinaryProvider, user) {
     });
     $stateProvider.state('add', {
         url: '/add',
+        templateUrl: require('./controllers/add.html'),
+        controller: 'addCtrl',
+    });
+    $stateProvider.state('edit', {
+        url: '/edit:post',
         templateUrl: require('./controllers/add.html'),
         controller: 'addCtrl',
     });
