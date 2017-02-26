@@ -34,25 +34,29 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         upload_preset: 'cjdjzfig', // enable unsigned upload
     });
 
-    const loggedIn = (role) => ($http, $rootScope) => $http.get('/user')
+    const loggedIn = (redirectTo, role) => ($http, $rootScope) => $http.get('/user')
         .then((res) => {
             if (res.status !== 200) return Promise.reject();
             return res.data;
         })
         .then((user) => {
+            $rootScope.user = user;
             if (!role || config.roles.permissions[user.role].indexOf(role) !== -1) return user;
             return Promise.reject();
         })
         .catch(() => {
-            $rootScope.go('login');
+            if (redirectTo) $rootScope.go(redirectTo);
         });
 
     // Router
     $urlRouterProvider.otherwise('/');
     $stateProvider.state('main', {
         url: '/',
-        templateUrl: require('./controllers/main.html'),
-        controller: 'mainCtrl',
+        templateUrl: require('./controllers/posts.html'),
+        controller: 'postsCtrl',
+        resolve: {
+            user: ($http, $rootScope) => $rootScope.user || loggedIn()($http, $rootScope)
+        },
     });
     $stateProvider.state('login', {
         url: '/login',
@@ -79,7 +83,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/posts.html'),
         controller: 'postsCtrl',
         resolve: {
-            user: loggedIn(),
+            user: loggedIn('login'),
         },
     });
     $stateProvider.state('posts', {
@@ -87,7 +91,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/posts.html'),
         controller: 'postsCtrl',
         resolve: {
-            user: loggedIn(config.roles.list.moderator),
+            user: loggedIn('login', config.roles.list.moderator),
         },
     });
     $stateProvider.state('users', {
@@ -95,7 +99,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/users.html'),
         controller: 'usersCtrl',
         resolve: {
-            user: loggedIn(config.roles.list.admin),
+            user: loggedIn('login', config.roles.list.admin),
         },
     });
 }

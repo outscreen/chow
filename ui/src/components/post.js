@@ -8,7 +8,7 @@ function post() {
         templateUrl: require('./post.html'),
         scope: {
             post: '=',
-            showStatus: '@',
+            showStatus: '=',
             mode: '@'
         },
     };
