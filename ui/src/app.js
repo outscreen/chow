@@ -1,8 +1,11 @@
 'use strict';
+require('angular');
+require('angular-cloudinary');
 
-angular.module('loi', ['ui.router', 'ngMaterial', 'ngMessages']);
+angular.module('loi', ['ui.router', 'ngMaterial', 'ngMessages', 'angular-cloudinary']);
 require('./controllers');
 require('./services');
+require('./components');
 
 angular.module('loi').run(runModule);
 runModule.$inject = ['$rootScope', '$state', 'validate'];
@@ -16,9 +19,17 @@ function runModule($rootScope, $state, validate) {
     }
 }
 
-angular.module('loi').config(router);
-router.$inject = ['$stateProvider', '$urlRouterProvider'];
-function router($stateProvider, $urlRouterProvider) {
+angular.module('loi').config(config);
+config.$inject = ['$stateProvider', '$urlRouterProvider', 'cloudinaryProvider'];
+function config($stateProvider, $urlRouterProvider, cloudinaryProvider) {
+    // Image hosting
+    cloudinaryProvider.config({
+        upload_endpoint: 'https://api.cloudinary.com/v1_1/', // default
+        cloud_name: 'doqcot5xu', // required
+        upload_preset: 'cjdjzfig', // enable unsigned upload
+    });
+
+    // Router
     $urlRouterProvider.otherwise('/');
     $stateProvider.state('main', {
         url: '/',
@@ -34,5 +45,10 @@ function router($stateProvider, $urlRouterProvider) {
         url: '/registration',
         templateUrl: require('./controllers/registration.html'),
         controller: 'registrationCtrl',
+    });
+    $stateProvider.state('add', {
+        url: '/add',
+        templateUrl: require('./controllers/add.html'),
+        controller: 'addCtrl',
     });
 }

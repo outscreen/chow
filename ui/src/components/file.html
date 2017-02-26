@@ -1,0 +1,8 @@
+<div>
+    <md-button class="md-raised" ngf-select ng-model="file" name="file" ngf-max-size="2MB"
+               ngf-resize="{width: 1000, height: 1000}" ng-disabled="pending">
+        <span ng-hide="pending">File</span>
+        <spinner ng-show="pending" color="dark"></spinner>
+    </md-button>
+    <div ng-show="error" class="error">{{error}}</div>
+</div>

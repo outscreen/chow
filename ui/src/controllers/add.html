@@ -1,0 +1,34 @@
+<div layout="column" class="md-inline-form">
+    <md-toolbar>
+        <h2 class="md-toolbar-tools">
+            <span>Add post</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout-padding>
+        <form name="AddForm">
+            <div>
+                <md-input-container>
+                    <label>Title</label>
+                    <input ng-model="add.title" name="title" required>
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container>
+                    <label>Description</label>
+                    <input ng-model="add.description" name="description">
+                </md-input-container>
+            </div>
+            <file data="add"></file>
+            <input ng-model="add.url" name="img" required ng-show="false">
+            <img ng-show="add.url" ng-src="{{add.url}}" class="preview">
+
+            <md-button class="md-raised md-primary" ng-click="do()"
+                       ng-disabled="AddForm.$invalid">
+                <span ng-hide="pending">Submit</span>
+                <spinner ng-show="pending" color="light"></spinner>
+            </md-button>
+            <div ng-show="error" class="error">{{error}}</div>
+        </form>
+    </md-content>
+</div>
