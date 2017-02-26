@@ -1,8 +1,9 @@
 'use strict';
 
 const post = require('../../models/post');
+const config = require('../../config');
+const requestValidation = require('../../core/validate/request');
 
-//TODO set required params
 const add = (req, res) => {
     post.add({
         userUuid: req.session.userUuid,
@@ -65,6 +66,10 @@ module.exports = [
         url: '',
         method: 'post',
         handler: add,
+        rules: [
+            requestValidation.loggedIn(),
+            requestValidation.fieldsValid(['url', 'title', 'description']),
+        ],
     },
     {
         url: ':id?',
@@ -75,11 +80,18 @@ module.exports = [
         url: ':id',
         method: 'put',
         handler: update,
+        rules: [
+            requestValidation.loggedIn(),
+            requestValidation.fieldsValid(['url', 'title', 'description']),
+        ],
     },
     {
         url: 'status/:id',
         method: 'put',
         handler: status,
+        rules: [
+            requestValidation.loggedIn(config.roles.list.moderator),
+        ],
     },
 ];
 
