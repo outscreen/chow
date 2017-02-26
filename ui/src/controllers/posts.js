@@ -12,6 +12,7 @@ function postsCtrl($scope, $http, $state, config, user) {
     };
     $scope.show = (mode) => {
         $scope.pending = true;
+        mode = $state.is('main') ? config.status.approved : mode;
         const status = mode ? `status=${mode}&` : '';
         const userUuid = $state.is('my') ? `user=${user.uuid}&` : '';
         $http.get(`/post?${userUuid}${status}`)
