@@ -4,59 +4,55 @@ const User = require('../../models/user');
 const requestValidation = require('../../core/validate/request');
 
 //TODO set required params
-const login = (req, res) => {
-    const response = {};
-
-    User.getDbUser({
-        username: req.body.email,
-        password: req.body.password,
-    }).catch((err) => {
-        console.error(err);
-        return Promise.reject({ status: 401, text: 'Invalid email or password' });
-    }).then((userInfo) => {
-        req.session.userUuid = userInfo.uuid;
-        req.session.userEmail = userInfo.email;
-        response.name = userInfo.name;
-        response.role = userInfo.role;
-        return response;
-    }).then((response) => {
-        res.status(200).send(response);
-    }).catch((err) => {
-        res.status(err.status).send(err.text);
+const login = (req, res) => User.getDbUser({
+    username: req.body.email,
+    password: req.body.password,
+}).catch((err) => {
+    console.error(err);
+    return Promise.reject({status: 401, text: 'Invalid email or password'});
+}).then((userInfo) => {
+    req.session.userUuid = userInfo.uuid;
+    req.session.userRole = userInfo.role;
+    req.session.userName = userInfo.name;
+    res.status(200).send({
+        uuid: req.session.userUuid,
+        role: req.session.userRole,
+        name: req.session.userName,
     });
-};
+}).catch((err) => {
+    res.status(err.status).send(err.text);
+});
 
-const create = (req, res) => {
-    const response = {};
-
-    User.createDbUser({
-        username: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-    }).then((userInfo) => {
-        req.session.userUuid = userInfo.uuid;
-        req.session.userEmail = userInfo.email;
-        response.name = userInfo.name;
-        response.role = userInfo.role;
-        res.status(200).send(response);
-    }).catch((err) => {
-        res.status(400).send(err);
+const create = (req, res) => User.createDbUser({
+    username: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
+}).then((userInfo) => {
+    req.session.userUuid = userInfo.uuid;
+    req.session.userRole = userInfo.role;
+    req.session.userName = userInfo.name;
+    res.status(200).send({
+        uuid: req.session.userUuid,
+        role: req.session.userRole,
+        name: req.session.userName,
     });
-};
+}).catch((err) => {
+    res.status(400).send(err);
+});
 
 const logout = (req, res) => {
     delete req.session.userUuid;
-    delete req.session.username;
+    delete req.session.userRole;
+    delete req.session.userName;
     res.status(200).send({success: true});
 };
 
 const state = (req, res) => {
-    const response = { username: req.session.username, success: true };
-
-    reminder.getUnread(req.session.userUuid)
-        .catch(() => Promise.resolve(null))
-        .then((reminders) => (response.reminders = reminders))
-        .then(() => res.status(200).send(response));
+    res.status(200).send({
+        uuid: req.session.userUuid,
+        role: req.session.userRole,
+        name: req.session.userName,
+    });
 };
 
 module.exports = [

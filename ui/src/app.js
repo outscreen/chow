@@ -7,6 +7,8 @@ require('./controllers');
 require('./services');
 require('./components');
 
+angular.module('loi').constant('config', require('../config'));
+
 angular.module('loi').run(runModule);
 runModule.$inject = ['$rootScope', '$state', 'validate'];
 function runModule($rootScope, $state, validate) {
@@ -21,13 +23,22 @@ function runModule($rootScope, $state, validate) {
 
 angular.module('loi').config(config);
 config.$inject = ['$stateProvider', '$urlRouterProvider', 'cloudinaryProvider'];
-function config($stateProvider, $urlRouterProvider, cloudinaryProvider) {
+function config($stateProvider, $urlRouterProvider, cloudinaryProvider, user) {
     // Image hosting
     cloudinaryProvider.config({
         upload_endpoint: 'https://api.cloudinary.com/v1_1/', // default
         cloud_name: 'doqcot5xu', // required
         upload_preset: 'cjdjzfig', // enable unsigned upload
     });
+
+    const loggedIn = (role) => ($http, $rootScope) => $http.get('/user')
+        .then((res) => {
+            if (res.status !== 200) return Promise.reject();
+            return res.data;
+        })
+        .catch(() => {
+            $rootScope.go('login');
+        });
 
     // Router
     $urlRouterProvider.otherwise('/');
@@ -50,5 +61,13 @@ function config($stateProvider, $urlRouterProvider, cloudinaryProvider) {
         url: '/add',
         templateUrl: require('./controllers/add.html'),
         controller: 'addCtrl',
+    });
+    $stateProvider.state('posts', {
+        url: '/posts',
+        templateUrl: require('./controllers/posts.html'),
+        controller: 'postsCtrl',
+        resolve: {
+            user: loggedIn(),
+        },
     });
 }

@@ -20,15 +20,14 @@
                 </md-input-container>
             </div>
             <file data="add"></file>
-            <input ng-model="add.url" name="img" required ng-show="false">
-            <img ng-show="add.url" ng-src="{{add.url}}" class="preview">
-
             <md-button class="md-raised md-primary" ng-click="do()"
-                       ng-disabled="AddForm.$invalid">
+                       ng-disabled="AddForm.$invalid || pending">
                 <span ng-hide="pending">Submit</span>
                 <spinner ng-show="pending" color="light"></spinner>
             </md-button>
             <div ng-show="error" class="error">{{error}}</div>
+            <input ng-model="add.url" name="img" required ng-show="false">
+            <img ng-show="add.url" ng-src="{{add.url}}" class="preview">
         </form>
     </md-content>
 </div>
