@@ -1,4 +1,15 @@
 <div class="post">
+    <div ng-if="mode.contains('approve')">
+        <md-button class="md-raised md-primary" ng-click="do(approved)" ng-disabled="pending || post.status === approved">
+            <span ng-hide="pending === approved">Approve</span>
+            <spinner ng-show="pending === approved" color="light"></spinner>
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="do(rejected)" ng-disabled="pending || post.status === rejected">
+            <span ng-hide="pending === rejected">Reject</span>
+            <spinner ng-show="pending === rejected" color="light"></spinner>
+        </md-button>
+        <div ng-show="error" class="error">{{error}}</div>
+    </div>
     <p class="title">
         {{post.title}}
         <i class="material-icons" ng-if="mode.contains('edit')" ng-click="go('edit', { post: stringify(post) })">create</i>

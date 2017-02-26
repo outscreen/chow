@@ -10,13 +10,14 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <md-button class="md-raised md-primary" ng-click="show(posts.mode === 'all' ? undefined : post.mode)"
+    <md-button class="md-raised md-primary" ng-click="show(posts.mode === 'all' ? undefined : posts.mode)"
                ng-disabled="pending">
         <span ng-hide="pending">OK</span>
         <spinner ng-show="pending" color="light"></spinner>
     </md-button>
     <div ng-show="error" class="error">{{error}}</div>
+
     <div ng-repeat="post in posts.list">
-        <post post="post" show-status="true" mode="preview edit"></post>
+        <post post="post" show-status="true" mode="preview {{posts.canEdit}} {{posts.canApprove}}"></post>
     </div>
 </md-content>

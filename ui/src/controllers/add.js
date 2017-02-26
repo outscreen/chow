@@ -16,7 +16,7 @@ function addCtrl($scope, $http, $stateParams) {
         $http[id ? 'put' : 'post'](`/post${id}`, $scope.add)
             .success(() => {
                 $scope.pending = false;
-                $scope.go('posts');
+                $scope.go('my');
             })
             .error((err) => {
                 $scope.pending = false;

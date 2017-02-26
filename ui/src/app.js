@@ -74,12 +74,20 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/add.html'),
         controller: 'addCtrl',
     });
+    $stateProvider.state('my', {
+        url: '/my',
+        templateUrl: require('./controllers/posts.html'),
+        controller: 'postsCtrl',
+        resolve: {
+            user: loggedIn(),
+        },
+    });
     $stateProvider.state('posts', {
         url: '/posts',
         templateUrl: require('./controllers/posts.html'),
         controller: 'postsCtrl',
         resolve: {
-            user: loggedIn(),
+            user: loggedIn(config.roles.list.moderator),
         },
     });
     $stateProvider.state('users', {
@@ -87,7 +95,7 @@ function appConfig($stateProvider, $urlRouterProvider, cloudinaryProvider, confi
         templateUrl: require('./controllers/users.html'),
         controller: 'usersCtrl',
         resolve: {
-            user: loggedIn('admin'),
+            user: loggedIn(config.roles.list.admin),
         },
     });
 }

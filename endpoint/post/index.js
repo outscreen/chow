@@ -24,7 +24,7 @@ const update = (req, res) => {
                 return Promise.reject({status: 401, text: 'Unauthorized'});
             }
         })
-        .then(() => post.update(req.body))
+        .then(() => post.update(Object.assign({}, req.body, { _id: req.params.id })))
         .then(() => res.status(200).send('OK'))
         .catch((err) => {
             console.error(err);
@@ -38,6 +38,19 @@ const get = (req, res) => {
     req.query.status && (params.status = req.query.status);
     req.query.user && (params.userUuid = req.query.user);
     post.get(params)
+        .then((posts) => res.status(200).send(posts))
+        .catch((err) => {
+            console.error(err);
+            if (err.status && err.text) return res.status(err.status).send(err.text);
+            return res.status(500).send('Please try again later');
+        });
+};
+
+const status = (req, res) => {
+    post.updateStatus({
+        _id: req.params.id,
+        status: req.body.status,
+    })
         .then((posts) => res.status(200).send(posts))
         .catch((err) => {
             console.error(err);
@@ -61,6 +74,11 @@ module.exports = [
         url: ':id',
         method: 'put',
         handler: update,
+    },
+    {
+        url: 'status/:id',
+        method: 'put',
+        handler: status,
     },
 ];
 

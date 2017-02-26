@@ -5,6 +5,6 @@ function registrationCtrl($scope, $http) {
     $scope.registration = {};
     $scope.do = () => $http.post('/user', $scope.registration)
         .success(() => {
-            $scope.go('posts');
+            $scope.go('my');
         });
 }

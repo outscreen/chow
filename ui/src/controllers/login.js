@@ -5,6 +5,6 @@ function loginCtrl($scope, $http) {
     $scope.login = {};
     $scope.do = () => $http.post('/user/login', $scope.login)
         .success(() => {
-            $scope.go('posts');
+            $scope.go('my');
         });
 }
